@@ -1,0 +1,20 @@
+Assumptions/Known Info:
+    -> No Downtime
+    -> Delete all data older than 1 month and add indexes
+
+
+
+Solution:
+
+Approach: Instead of trying to delete all data at once we can incrementally delete data in batches
+          Attempt to perform these operation during off peak hours to minimize any impact
+
+
+1. Starting from one month prior start deleting records in batches to allow other operations to continue between deletions
+  -> Could do some testing prior to figure out the batch size
+  -> Lets use 1000 records as the batch size
+
+2. Add indexes simultaneously:
+    CREATE INDEX idex_create_date ON Test_Table (create_date);
+    CREATE INDEX idex_status ON Test_Table (status);
+    CREATE INDEX idxex_name ON Test_Table (name);

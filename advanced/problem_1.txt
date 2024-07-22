@@ -1,0 +1,21 @@
+Assumtions:
+ -> Need to perfrom SELECT DISTINCT NAME on the most recent records 
+ -> No indexes present
+ -> No data purged in long time
+ -> Table Name: TestTable
+ -> Colums: key, name, create_date, status
+ -> Assuming SQL RDBMS
+Solution:
+    -> Since there are no indexes if we perform the query most likely the entire table will be scaned which will 
+    be very slow
+    -> With 100 threads updating status column it can cause futher performance slowdowns
+
+    Basic Ideas:
+    -> Since I am seraching the most recent records we can filter by CREATE_DATE column to reduce the number of rows queried
+    -> Also limit the number of records returned, essentially batch the result to ensure the query does not take too long to run 
+
+    EX: 
+    SELECT DISTINCT name 
+    FROM test_table 
+    WHERE create_date >= DATE_SUB(CURRENT_DATE(), INTERVAL X DAY)
+    LIMIT 10000;
